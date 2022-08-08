@@ -1,0 +1,88 @@
+<title>grid</title>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<link rel='stylesheet' href='http://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'/>
+<style>
+    .lavender { 
+        background-color: lavender;
+    }
+
+    .lavenderblush {
+        background-color: lavenderblush;
+    }
+</style>
+<body>
+<div class='container'>
+    <h1>container</h1>
+</div>
+
+<div class='container-fluid'>
+    <h1>container-fluid</h1>
+</div>
+
+<div class='container mb-3'> <!-- margin bottom 3만큼 띄운다. -->
+    <div class='row'>
+        <div class='col lavender'>11</div>
+        <div class='col lavenderblush'>12</div>
+        <div class='col lavender'>13</div>
+    </div>
+    <div class='row'>
+        <div class='col lavender'>21</div>
+        <div class='col lavenderblush'>22</div>
+    </div>
+</div>
+
+<div class='container-fluid'>
+    <div class='row'>
+        <div class='col lavender'>11</div>
+        <div class='col lavenderblush'>12</div>
+        <div class='col lavender'>13</div>
+    </div>
+    <div class='row'>
+        <div class='col lavender'>21</div>
+        <div class='col lavenderblush'>22</div>
+    </div>
+</div>
+
+<div class='container mt-3'> <!-- margin top 3만큼 띄운다. -->
+    <div class='row'>
+        <div class='col lavender'>11</div>
+        <div class='col lavenderblush'>12</div>
+    </div>
+
+    <div class='row text-center'>
+        <div class='col lavender'>11</div>
+        <div class='col lavenderblush'>12</div>
+    </div>
+
+    <div class='row'> <!-- col 개수를 지정하면 지정한 개수만 쓰고 끝낸다. -->
+        <div class='col-4 lavender'>11</div>
+        <div class='col-4 lavenderblush'>12</div>
+    </div>
+
+    <div class='row justify-content-start'> <!-- 기본값(왼쪽)-->
+        <div class='col-4 lavender'>11</div>
+        <div class='col-4 lavenderblush'>12</div>
+    </div>
+
+    <div class='row justify-content-center'>
+        <div class='col-4 lavender'>11</div>
+        <div class='col-4 lavenderblush'>12</div>
+    </div>
+
+    <div class='row justify-content-end'> <!-- 오른쪽 -->
+        <div class='col-4 lavender'>11</div>
+        <div class='col-4 lavenderblush'>12</div>
+    </div>
+
+    <div class='row justify-content-around'> <!-- 좌우의 밸런스를 맞춘다. -->
+        <div class='col-4 lavender'>11</div>
+        <div class='col-4 lavenderblush'>12</div>
+    </div>
+
+    <div class='row justify-content-between'> <!-- 좌우 끝에 맞춘다. -->
+        <div class='col-4 lavender'>11</div>
+        <div class='col-4 lavenderblush'>12</div>
+    </div>
+</div>
+</body>
