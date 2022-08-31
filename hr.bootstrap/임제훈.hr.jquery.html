@@ -13,76 +13,120 @@ $(() => {
     let laborerId = 1
     let laborerName = $(':text')
     let hireDate = $('input[type="date"]')
-    let btnIdx = $('.container :button')
 
     function noLaborer() {
         $('<tr><td id="noLaborer" colspan="4">노동자가 없습니다.</td></tr>').appendTo('tbody')
     }
     if($('tbody tr').length == 0) noLaborer()
 
-    let empLaborer = $('#noLaborer').parent()
+    function resetVal() {
+        laborerName.val('')
+        hireDate.val('')
+    }
 
     function createLaborer() {
-        if(empLaborer) empLaborer.remove()
+        if($('#noLaborer')) $('#noLaborer').parent().remove()
         $(`<tr>
             <td><input type="radio" name="laborerSelect"/></td>
             <td>${laborerId++}</td>
             <td>${laborerName.val()}</td>
             <td>${hireDate.val()}</td>
         </tr>`).prependTo('tbody')
-        laborerName.val('')
-        hireDate.val('')
+        resetVal()
     }
 
     function laborerAddAttr() {
-        $(this).attr({
-            'data-toggle': 'modal',
-            'data-target': '#delLaborerModal'
-        })
         $('.modal-footer').empty()
         $('<button id="okay" type="button" class="btn btn-primary data-dismiss="modal">확인</button>').appendTo('.modal-footer')
         $('#okay').click(() => $('#delLaborerModal').modal('hide'))
     }
 
     function laborerDelAttr() {
-        $(this).removeAttr('data-toggle', 'data-target')
         $('#delLaborerModal .modal-body p').text('노동자를 삭제하시겠습니까?')
         $('.modal-footer').empty()
         $('<button id="noDelete" type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>').appendTo('.modal-footer')
         $('<button id="yesDelete" type="button" class="btn btn-primary">예</button>').appendTo('.modal-footer')
     }
 
+    function addLaborerAttr() {
+        $('#addLaborer').attr({
+            'data-toggle': 'modal',
+            'data-target': '#delLaborerModal'
+        })
+    }
+
+    function addLaborerRemoveAttr() {
+        $('#addLaborer').removeAttr('data-toggle', 'data-target')
+    }
+
+    function fixLaborerAttr() {
+        $('#fixLaborer').attr({
+            'data-toggle': 'modal',
+            'data-target': '#delLaborerModal'
+        })
+    }
+
+    function fixLaborerRemoveAttr() {
+        $('#fixLaborer').removeAttr('data-toggle', 'data-target')
+    }
+
     $('#addLaborer').click(() => {
         if(laborerName.val() && hireDate.val()) {
             createLaborer()
+            addLaborerRemoveAttr()
             laborerDelAttr()
         } else {
+            addLaborerAttr()
             laborerAddAttr()
             $('#delLaborerModal .modal-body p').text('노동자명과 입사일을 입력하세요.').show()
+            resetVal()
         }
     })
 
     $('#fixLaborer').click(() => {
-        if(empLaborer) {
-
+        if($('#noLaborer').length) {
+            fixLaborerAttr()
+            laborerAddAttr()
+            $('#delLaborerModal .modal-body p').text('수정할 노동자가 없습니다.').show()
+        } else {
+            if($('tbody tr td :checked').length) {
+                if(laborerName.val() && hireDate.val()) {
+                    $('tbody tr td :checked').parent().siblings(':eq(1)').text(laborerName.val())
+                    $('tbody tr td :checked').parent().siblings(':eq(2)').text(hireDate.val())
+                    resetVal()
+                    //$(':checked').attr('checked', 'false')
+                    fixLaborerRemoveAttr()
+                    laborerDelAttr()
+                } else {
+                    fixLaborerAttr()
+                    laborerAddAttr()
+                    $('#delLaborerModal .modal-body p').text('노동자명과 입사일을 입력하세요.').show()
+                    resetVal()
+                }
+            } else {
+                fixLaborerAttr()
+                laborerAddAttr()
+                $('#delLaborerModal .modal-body p').text('수정할 노동자를 선택하세요.').show()
+            }
         }
-        console.log($('tbody tr td :checked').length)
-        $('tbody tr td :checked').parent().siblings(':eq(1)').text(laborerName.val())
-        $('tbody tr td :checked').parent().siblings(':eq(2)').text(hireDate.val())
     })
 
-    $('#delLaborer').on({
-        click: () => {
-            // if() {
-            //
-            // }
-            // if($(':checked').length) {
-            //     $(':checked').parents('tr').remove()
-            //     $('#delLaborerModal').modal('hide')
-            // } else {
-            //
-            //     $('#delLaborerModal').modal('hide')
-            // }
+    $('#delLaborer').click(() => {
+        if($('#noLaborer').length) {
+            laborerAddAttr()
+            $('#delLaborerModal .modal-body p').text('삭제할 노동자가 없습니다.').show()
+        } else {
+            if($('tbody tr td :checked').length) {
+                laborerDelAttr()
+                $('#yesDelete').click(() => {
+                    $(':checked').parents('tr').remove()
+                    if($('tbody tr').length == 0) noLaborer()
+                    $('#delLaborerModal').modal('hide')
+                })
+            } else {
+                laborerAddAttr()
+                $('#delLaborerModal .modal-body p').text('삭제할 노동자를 선택하세요.').show()
+            }
         }
     })
 })
