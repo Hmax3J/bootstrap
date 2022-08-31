@@ -13,31 +13,62 @@ $(() => {
     let laborerId = 1
     let laborerName = $(':text')
     let hireDate = $('input[type="date"]')
-    let laborerCnt = $('tbody').find('tr').length
-    let nolaborer = ''
+    let btnIdx = $('.container :button')
 
-    if(!laborerCnt) nolaborer = $('<tr><td colspan="4">노동자가 없습니다.</td></tr>').appendTo('tbody')
+    function noLaborer() {
+        $('<tr><td id="noLaborer" colspan="4">노동자가 없습니다.</td></tr>').appendTo('tbody')
+    }
+    if($('tbody tr').length == 0) noLaborer()
+
+    let empLaborer = $('#noLaborer').parent()
+
+    function createLaborer() {
+        if(empLaborer) empLaborer.remove()
+        $(`<tr>
+            <td><input type="radio" name="laborerSelect"/></td>
+            <td>${laborerId++}</td>
+            <td>${laborerName.val()}</td>
+            <td>${hireDate.val()}</td>
+        </tr>`).prependTo('tbody')
+        laborerName.val('')
+        hireDate.val('')
+    }
+
+    function laborerAddAttr() {
+        $(this).attr({
+            'data-toggle': 'modal',
+            'data-target': '#delLaborerModal'
+        })
+        $('.modal-footer').empty()
+        $('<button id="okay" type="button" class="btn btn-primary data-dismiss="modal">확인</button>').appendTo('.modal-footer')
+        $('#okay').click(() => $('#delLaborerModal').modal('hide'))
+    }
+
+    function laborerDelAttr() {
+        $(this).removeAttr('data-toggle', 'data-target')
+        $('#delLaborerModal .modal-body p').text('노동자를 삭제하시겠습니까?')
+        $('.modal-footer').empty()
+        $('<button id="noDelete" type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>').appendTo('.modal-footer')
+        $('<button id="yesDelete" type="button" class="btn btn-primary">예</button>').appendTo('.modal-footer')
+    }
 
     $('#addLaborer').click(() => {
-            if(laborerName.val().length < 1) {
-                console.log('asdasd')
-                $(`<tr>
-                <td><input type="radio"/></td>
-                <td>${laborerId++}</td>
-                <td>${laborerName.val()}</td>
-                <td>${hireDate.val()}</td>
-                </tr>`).prependTo('tbody')
-                //if() $('')
-            } else {
-
-            }
+        if(laborerName.val() && hireDate.val()) {
+            createLaborer()
+            laborerDelAttr()
+        } else {
+            laborerAddAttr()
+            $('#delLaborerModal .modal-body p').text('노동자명과 입사일을 입력하세요.').show()
+        }
     })
 
-    $('#fixLaborer').on({
-        click: () => {
-            $('tbody tr td :checked').parent().siblings(':eq(1)').text(laborerName.val())
-            $('tbody tr td :checked').parent().siblings(':eq(2)').text(hireDate.val())
+    $('#fixLaborer').click(() => {
+        if(empLaborer) {
+
         }
+        console.log($('tbody tr td :checked').length)
+        $('tbody tr td :checked').parent().siblings(':eq(1)').text(laborerName.val())
+        $('tbody tr td :checked').parent().siblings(':eq(2)').text(hireDate.val())
     })
 
     $('#delLaborer').on({
